@@ -1,5 +1,22 @@
-
 todo_list = []
+#helper function
+def get_valid_task_index(prompt):
+    while True:
+        index = input(prompt).strip()
+        #checks if the index is not a number
+        if not index.isdigit():
+            print("Invalid input (Input must be a number)")
+            
+        else:
+            index = int(index) - 1
+            # Check if the index is within the range of the list
+            if 0 <= index  < len(todo_list):
+                return index
+                
+            else:
+                print("Invalid task number try again ")
+                
+#let the user add new a new task
 def add_task():
     while True:
         task = input("Enter a task ")
@@ -11,59 +28,36 @@ def add_task():
             print("Task added")
             break
           
-
+#shows the user how many task they currently have
 def view_task():
     if not todo_list:
         print("Task not found ")
     else:
-        print("\nTASKS")
+        print("\n TASKS")
         for i, task in enumerate(todo_list, start=1):
             print(f"{i}. {task}")
 
-def completed():
+#mark a task as completed
+def mark_task_completed():
+    if not todo_list:
+        print("Task not found ")
+        return  
+   
+    index = get_valid_task_index("Enter a number to be marked as completed: ")
+    completed_task = todo_list.pop(index)
+    print(f"Task {completed_task} marked as completed")
+                
+#delete a task form the list
+def delete_task():
     if not todo_list:
         print("Task not found ")
         return
     
-    while True:
-        index = input("Enter a number to mark as completed ")
-        if not index.isdigit():
-            print("Invalid input (Input must be a number)")
-            
-        else:
-            index = int(index) - 1
-            # Check if the index is within the range of the list
-            if 0 <= index  < len(todo_list):
-                completed_task = todo_list.pop(index)
-                print(f"Task {completed_task} marked as completed")
-                break
-                
-            else:
-                print("Invalid task number try again ")
-                
-
-def delete():
-    if not todo_list:
-        print("Task not found ")
-        return
-    
-    while True:
-        delete_task = input("Enter a number to mark as completed ")
-        if not delete_task.isdigit():
-            print("Invalid input (Input must be a number)")
-            
-        else:
-            delete_task = int(delete_task) - 1
-            
-            if 0 <= delete_task  < len(todo_list):
-                deleted_task = todo_list.pop(delete_task)
-                print(f"Task {deleted_task} has been deleted")
-                break
-                
-            else:
-                print("Invalid task number try again ")
-        
-
+    index = get_valid_task_index("Enter a number to be deleted ")
+   
+    deleted_task = todo_list.pop(index)
+    print(f"Task {deleted_task} has been deleted")
+               
 def main():
     
     while True:
@@ -75,18 +69,18 @@ def main():
         print("4: Delete task")
         print("5: Exit")
         print("********************")
-        choice = input("Enter a choice ")
+        choice = input("Enter a choice ").strip()
         
         if choice == "1":
             add_task()
         elif choice == "2":
             view_task()
         elif choice == "3":
-            completed()
+            mark_task_completed()
         elif choice == "4":
-            delete()
+            delete_task()
         elif choice == "5":
-            print("Goodbye")
+            print("GOODBYE")
             break
         else:
             print("Invalid option")
